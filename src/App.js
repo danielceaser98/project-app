@@ -1,31 +1,17 @@
 import React, {Component} from 'react';
-import QrReader from 'react-qr-reader';
+import QRScanner from './QrScanner';
+import QRGenerator from './QRGenerator';
 
 class App extends Component {
-  state = {
-    result: 'No result yet'
-  }
- 
-  handleScan = data => {
-    if (data) {
-      this.setState({
-        result: data
-      })
-    }
-  }
-  handleError = err => {
-    console.error(err)
-  }
   render() {
     return (
+      <div style={{display:'flex'}}>
+      <div style={{paddingRight:'20%', width:'50%', height:'50%'}}>
+        <QRScanner/>
+      </div>
       <div>
-        <QrReader
-          delay={300}
-          onError={this.handleError}
-          onScan={this.handleScan}
-          style={{ width: '45%', height: '45%' }}
-        />
-        <p>{this.state.result}</p>
+        <QRGenerator/>
+      </div>
       </div>
     )
   }
