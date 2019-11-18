@@ -1,18 +1,25 @@
 import React, {Component} from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import QRScanner from './QrScanner';
 import QRGenerator from './QRGenerator';
+import loginScreen from './loginScreen';
+import Navigation from './Navigation';
 
 class App extends Component {
   render() {
     return (
-      <div style={{display:'flex'}}>
-      <div style={{paddingRight:'20%', width:'50%', height:'50%'}}>
-        <QRScanner/>
-      </div>
+      <BrowserRouter>
       <div>
-        <QRGenerator/>
+        <Navigation />
+        <Switch>
+          <Route path="/" component={loginScreen} exact />
+          <Route path="/scanner" component={QRScanner} />
+          <Route path="/generator" component={QRGenerator} />
+          <Route component={Error} />
+        </Switch>
       </div>
-      </div>
+    </BrowserRouter>
     )
   }
 }

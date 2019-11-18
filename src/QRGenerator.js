@@ -2,14 +2,22 @@ import React, {Component} from 'react';
 
 var d = new Date();
 var n = d.getTime();
-setInterval (function(){
-  var date = new Date(n); 
-  var n1 = date.toString();
-  document.getElementById("image").src = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+n1;
-  n=new Date().getTime();
-} , 5000);
-
 class QRGenerator extends Component {
+    componentDidMount(){
+        this.getqr();
+        setInterval (this.getqr, 5000);        
+    }
+   getqr = () =>{
+       if(document.getElementById("image")!==null)
+       {
+        document.getElementById("image").src = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+n;
+       }
+       else
+       {
+        console.log("Ridip");
+       }
+    n=new Date().getTime();
+   }
   render() {
     return (
       <div>
@@ -18,5 +26,4 @@ class QRGenerator extends Component {
     )
   }
 }
-
 export default QRGenerator;
