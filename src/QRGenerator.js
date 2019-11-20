@@ -1,27 +1,25 @@
 import React, {Component} from 'react';
+import QRcode from 'qrcode.react';
 
-var d = new Date();
-var n = d.getTime();
 class QRGenerator extends Component {
-    componentDidMount(){
-        this.getqr();
-        setInterval (this.getqr, 5000);        
-    }
-   getqr = () =>{
-       if(document.getElementById("image")!==null)
-       {
-        document.getElementById("image").src = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+n;
-       }
-       else
-       {
-        console.log("Ridip");
-       }
-    n=new Date().getTime();
-   }
+  constructor(props){
+    super(props);
+    this.state = { time: Date.now() };
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => this.setState({ time: Date.now() }), 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
   render() {
+     var time = this.state.time.toString()
+    console.log(time)
     return (
-      <div>
-        <img id="image" alt="qr-code"/>
+      <div >
+        <QRcode value={time} size={400}/>
       </div>
     )
   }
