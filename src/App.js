@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import StudentPage from './StudentPage';
 import TeacherPage from './TeacherPage';
-import LoginScreen from './LoginScreen';
+import LoginScreen from './GLoginScreen';
 import Navigation from './Navigation';
 
 class App extends Component {
