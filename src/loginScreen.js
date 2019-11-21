@@ -2,11 +2,48 @@ import React, {Component} from 'react';
 import Box from '@material-ui/core/Box';
 import './background.css';
 import GoogleLogin from 'react-google-login';
+import axios from 'axios';
 
-
-export default class App extends Component {
+class LoginScreen extends Component {
+  constructor(props){
+    super(props);
+  }
   render() {
-    const responseGoogle = (response) => {
+    const responseSuccess = (response) => {
+     console.log(response.w3.U3);
+     //this.props.history.push("/scanner");
+     let formData = {email: response.w3.U3};
+        const encodeForm = (data) => {
+        return Object.keys(data)
+            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+            .join('&');
+        }
+        axios.post('http://127.0.0.1:8080/attandance_application/TestServlet',encodeForm(formData))
+        .then(function (reply) {
+        // handle success
+        console.log(reply);
+        if(reply==="teacher")
+        {
+          this.props.history.push("/generator");
+        }
+        else if(reply==="student")
+        {
+          this.props.history.push("/scanner");
+        }
+        else
+        {
+          console.log("unknown");
+        }
+        })
+        .catch(function (error) {
+        // handle error
+        console.log(error);
+        })
+        .finally(function () {
+        // always executed
+      });
+    }
+    const responseFailure = (response) => {
       console.log(response.w3.U3);
     }
     return (
@@ -24,8 +61,8 @@ export default class App extends Component {
               style={{height:'2rem', width:'5rem', backgroundColor:'white'}}
               clientId="220838812292-k5hcpmd3soo47q0u7oci6sqiqcig37gq.apps.googleusercontent.com"
               buttonText="LogIn"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
+              onSuccess={responseSuccess}
+              onFailure={responseFailure}
               cookiePolicy={'single_host_origin'}/>
         </Box>
       </div>
@@ -33,3 +70,4 @@ export default class App extends Component {
     )
   }
 }
+export default LoginScreen;
