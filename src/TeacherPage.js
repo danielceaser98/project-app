@@ -7,7 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import QRGenerator from './QRGenerator';
-
+import {GoogleLogout} from 'react-google-login'
 
 
 function TabPanel(props) {
@@ -56,6 +56,13 @@ export default function SimpleTabs() {
   };
 
   return (
+    <div>
+    <div style={{textAlign:'right'}}>
+      <GoogleLogout
+      clientId="220838812292-k5hcpmd3soo47q0u7oci6sqiqcig37gq.apps.googleusercontent.com"
+      buttonText="Logout"
+      ></GoogleLogout>
+    </div>
     <div className={classes.root}>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
@@ -69,6 +76,7 @@ export default function SimpleTabs() {
       <TabPanel value={value} index={1}>
         Attendance of all students
       </TabPanel>
+    </div>
     </div>
   );
 }

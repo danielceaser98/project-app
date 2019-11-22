@@ -3,36 +3,39 @@ import Box from '@material-ui/core/Box';
 import './background.css';
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
+function withHistory(Component){
+  return function WrappedComponent(props){
+    const hist = useHistory();
+    return <Component {...props} hist={hist}/>;
+  }
+}
 
 class LoginScreen extends Component {
-  constructor(props){
-    super(props);
-  }
   render() {
-    const responseSuccess = (response) => {
-     console.log(response.w3.U3);
-     //this.props.history.push("/scanner");
+    const ResponseSuccess = (response) => {
+     const history = this.props.hist;
      let formData = {email: response.w3.U3};
         const encodeForm = (data) => {
         return Object.keys(data)
             .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
             .join('&');
         }
-        axios.post('http://127.0.0.1:8080/attandance_application/TestServlet',encodeForm(formData))
+        axios.post('http://127.0.0.1:8080/attandance_application/ValidateUser',encodeForm(formData))
         .then(function (reply) {
         // handle success
-        console.log(reply);
-        if(reply==="teacher")
+        if(reply.data==="teacher")
         {
-          this.props.history.push("/generator");
+          history.push("/generator");
         }
-        else if(reply==="student")
+        else if(reply.data==="student")
         {
-          this.props.history.push("/scanner");
+          history.push("/scanner");
         }
-        else
+        else if(reply.data==="unknown")
         {
-          console.log("unknown");
+          console.log(reply);
         }
         })
         .catch(function (error) {
@@ -43,7 +46,7 @@ class LoginScreen extends Component {
         // always executed
       });
     }
-    const responseFailure = (response) => {
+    const ResponseFailure = (response) => {
       console.log(response.w3.U3);
     }
     return (
@@ -61,8 +64,8 @@ class LoginScreen extends Component {
               style={{height:'2rem', width:'5rem', backgroundColor:'white'}}
               clientId="220838812292-k5hcpmd3soo47q0u7oci6sqiqcig37gq.apps.googleusercontent.com"
               buttonText="LogIn"
-              onSuccess={responseSuccess}
-              onFailure={responseFailure}
+              onSuccess={ResponseSuccess}
+              onFailure={ResponseFailure}
               cookiePolicy={'single_host_origin'}/>
         </Box>
       </div>
@@ -70,4 +73,5 @@ class LoginScreen extends Component {
     )
   }
 }
+LoginScreen = withHistory(LoginScreen);
 export default LoginScreen;
